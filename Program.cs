@@ -9,6 +9,22 @@ using System.Xml.Schema;
 
 namespace Gyak01
 {
+    class Etel
+    {
+        public string Nev { get; set; }
+        public string Leiras { get; set; }
+
+        public Etel(string nev, string leiras)
+        {
+            Nev = nev;
+            Leiras = leiras;
+        }
+
+        public override string ToString()
+        {
+            return $"Étel: {Nev}, Leírás: {Leiras}";
+        }
+    }
 	internal class Program
 	{
 		static Random r = new Random();
