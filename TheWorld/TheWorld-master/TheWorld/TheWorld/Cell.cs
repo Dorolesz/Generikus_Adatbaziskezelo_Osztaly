@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace TheWorld
 {
-    internal class Cell
+    public class Cell
     {
         public int X { get; }
         public int Y { get; }
 
         public List<Creature> Inhabitants { get; set; } = new List<Creature>();
         public Plant Plant { get; set; }
-        public List<Herbivore> Herbivores { get; set; } = new List<Herbivore>();
-        public List<Carnivore> Carnivores { get; set; } = new List<Carnivore>();
 
         public Cell(int x, int y)
         {

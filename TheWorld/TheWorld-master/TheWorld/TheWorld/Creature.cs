@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheWorld
 {
-    internal abstract class Creature
+    public abstract class Creature
     {
         public int Energy { get; set; }
         public int SightRange { get; set; }
@@ -15,40 +15,16 @@ namespace TheWorld
         public abstract void Move(Cell newCell);
         public abstract void Eat(Creature other);
 
-        public Creature(int energy, int sightRange, Cell startCell)
+        public Creature(int energy, int sightRange, Cell currentCell)
         {
-            CurrentCell = startCell;
-            CurrentCell.AddCreature(this);
-        }
-
-
-        public int GetEnergy()
-        {
-            return Energy;
-        }
-        public void SetEnergy(int value)
-        {
-            Energy = value;
+            Energy = energy;
+            SightRange = sightRange;
+            CurrentCell = currentCell;
         }
 
         public bool IsAlive()
         {
             return Energy > 0;
         }
-
-        public void MoveRandomly(World world)
-        {
-            var neighbors = world.GetNeighbors(CurrentCell);
-            if (neighbors.Count > 0)
-            {
-                var random = new Random();
-                Cell newCell = neighbors[random.Next(neighbors.Count)];
-                CurrentCell.RemoveCreature(this);
-                CurrentCell = newCell;
-                newCell.AddCreature(this);
-            }
-        }
-
-
     }
 }

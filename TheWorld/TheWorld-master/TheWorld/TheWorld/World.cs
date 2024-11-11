@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheWorld;
 
-internal class World
+public class World
 {
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -47,13 +47,21 @@ internal class World
         plant.CurrentCell = cell;
     }
 
+    public void RemoveCreature(Creature creature)
+    {
+        foreach (var cell in Cells)
+        {
+            if (cell.Inhabitants.Contains(creature))
+            {
+                cell.RemoveCreature(creature);
+                break;
+            }
+        }
+    }
+
 
     public List<Cell> GetNeighbors(Cell cell)
     {
-        if (cell == null)
-        {
-            throw new ArgumentNullException(nameof(cell), "A cell objektum nem lehet null.");
-        }
 
         List<Cell> neighbors = new List<Cell>();
         int[] dx = { -1, 1, 0, 0, -1, 1, -1, 1 };  // Például mozgási irányok (bal, jobb, fent, lent, stb.)
@@ -64,7 +72,7 @@ internal class World
             int newX = cell.X + dx[i];
             int newY = cell.Y + dy[i];
 
-            if (IsValidCoordinate(newX, newY)) ;
+            if (IsValidCoordinate(newX, newY))
             {
                 Cell neighbor = GetCell(newX, newY);
                 if (neighbor != null)
@@ -84,26 +92,87 @@ internal class World
 
     public void Update()
     {
-        for (int x = 0; x < Width; x++)
+        List<Herbivore> herbivoresToMove = new List<Herbivore>();
+        List<Carnivore> carnivoresToMove = new List<Carnivore>();
+        List<(Plant, Cell)> plantsToGrow = new List<(Plant, Cell)>();
+
+        foreach (var cell in Cells)
         {
-            for (int y = 0; y < Height; y++)
+            herbivoresToMove.AddRange(cell.Inhabitants.OfType<Herbivore>());
+            carnivoresToMove.AddRange(cell.Inhabitants.OfType<Carnivore>());
+            if (cell.Plant != null)
             {
-                var cell = Cells[x, y];
-                cell.Plant?.Grow();
-                if (cell.Plant?.IsFullyGrown == true)
-                    cell.Plant.Spread(this);
+                plantsToGrow.Add((cell.Plant, cell));
             }
         }
-    }
-    public void Draw()
-    {
-        for (int y = 0; y < Height; y++)
+
+        Dictionary<Cell, List<Creature>> targetCells = new Dictionary<Cell, List<Creature>>();
+
+        foreach (var herbivore in herbivoresToMove)
         {
-            for (int x = 0; x < Width; x++)
+            Cell bestCell = herbivore.FindBestCellToMove(this);
+            if (bestCell != null && bestCell != herbivore.CurrentCell)
             {
-                Console.Write(Cells[x, y]);
+                if (!targetCells.ContainsKey(bestCell))
+                {
+                    targetCells[bestCell] = new List<Creature>();
+                }
+                targetCells[bestCell].Add(herbivore);
             }
-            Console.WriteLine();
+        }
+
+        foreach (var carnivore in carnivoresToMove)
+        {
+            Cell bestCell = carnivore.FindBestCellToMove(this);
+            if (bestCell != null && bestCell != carnivore.CurrentCell)
+            {
+                if (!targetCells.ContainsKey(bestCell))
+                {
+                    targetCells[bestCell] = new List<Creature>();
+                }
+                targetCells[bestCell].Add(carnivore);
+            }
+        }
+
+        foreach (var targetCell in targetCells)
+        {
+            var creatures = targetCell.Value;
+            if (creatures.Count > 1)
+            {
+                var firstCreature = creatures.First();
+                firstCreature.Move(targetCell.Key);
+                creatures.Remove(firstCreature);
+
+                foreach (var creature in creatures)
+                {
+                    var neighbors = GetNeighbors(targetCell.Key).Where(cell => !cell.Inhabitants.Any()).ToList();
+                    if (neighbors.Any())
+                    {
+                        creature.Move(neighbors.First());
+                    }
+                }
+            }
+            else
+            {
+                creatures.First().Move(targetCell.Key);
+            }
+        }
+
+        foreach (var herbivore in herbivoresToMove)
+        {
+            herbivore.EatPlant();
+            herbivore.Reproduce(this);
+        }
+
+        foreach (var carnivore in carnivoresToMove)
+        {
+            carnivore.Reproduce(this);
+        }
+
+        foreach (var (plant, cell) in plantsToGrow)
+        {
+            plant.Grow();
+            plant.Spread(this, cell);
         }
     }
 
@@ -116,19 +185,19 @@ internal class World
                 Cell cell = Cells[x, y];
                 if (cell.Plant != null)
                 {
-                    Console.Write("P");  // Növény
+                    Console.Write("P ");  // Növény
                 }
                 else if (cell.Inhabitants.Any(c => c is Carnivore))
                 {
-                    Console.Write("C");  // Ragadozó
+                    Console.Write("C ");  // Ragadozó
                 }
                 else if (cell.Inhabitants.Any(c => c is Herbivore))
                 {
-                    Console.Write("H");  // Növényevő
+                    Console.Write("H ");  // Növényevő
                 }
                 else
                 {
-                    Console.Write(".");  // Üres cella
+                    Console.Write(". ");  // Üres cella
                 }
             }
             Console.WriteLine();

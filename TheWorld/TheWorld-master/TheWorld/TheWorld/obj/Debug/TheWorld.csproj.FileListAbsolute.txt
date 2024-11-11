@@ -1,0 +1,7 @@
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\bin\Debug\TheWorld.exe.config
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\bin\Debug\TheWorld.exe
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\bin\Debug\TheWorld.pdb
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\obj\Debug\TheWorld.csproj.AssemblyReference.cache
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\obj\Debug\TheWorld.csproj.CoreCompileInputs.cache
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\obj\Debug\TheWorld.exe
+D:\PETRIK\2024-25\C#\TheWorld\TheWorld-master\TheWorld\TheWorld\obj\Debug\TheWorld.pdb

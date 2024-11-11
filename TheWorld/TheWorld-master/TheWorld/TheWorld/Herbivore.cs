@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheWorld
 {
-    internal class Herbivore : Creature
+    public class Herbivore : Creature
     {
         public int Size { get; set; }
         public Herbivore(int energy, int sightRange, Cell currentCell, int size) : base(energy, sightRange, currentCell)
@@ -16,11 +16,11 @@ namespace TheWorld
 
         public override void Move(Cell newCell)
         {
-            if (newCell != null && newCell != CurrentCell)
+            if (newCell != null && newCell != CurrentCell && !newCell.Inhabitants.OfType<Herbivore>().Any())
             {
                 CurrentCell.RemoveCreature(this);
-                CurrentCell = newCell;
                 newCell.AddCreature(this);
+                CurrentCell = newCell;
             }
         }
 
@@ -35,49 +35,42 @@ namespace TheWorld
             Cell bestCell = null;
             int bestScore = int.MinValue;
 
-            // Keresünk ragadozókat a látómezőn belül
             List<Cell> visibleCells = new List<Cell>();
             for (int dx = -SightRange; dx <= SightRange; dx++)
             {
                 for (int dy = -SightRange; dy <= SightRange; dy++)
                 {
-                    if (dx == 0 && dy == 0) continue; // Ne vegyük figyelembe a jelenlegi cellát
+                    if (dx == 0 && dy == 0) continue;
                     Cell cell = world.GetCell(CurrentCell.X + dx, CurrentCell.Y + dy);
-                    if (cell == null)
-                    {
-                        cell = default(Cell);
-                    }
-                    else
+                    if (cell != null)
                     {
                         visibleCells.Add(cell);
                     }
                 }
             }
 
-            // Megkeressük a legközelebbi ragadozót
             Cell predatorCell = visibleCells
                 .Where(cell => cell.Inhabitants.OfType<Carnivore>().Any())
                 .OrderBy(cell => Math.Abs(cell.X - CurrentCell.X) + Math.Abs(cell.Y - CurrentCell.Y))
-                .FirstOrDefault() ?? new Cell(0, 0);
+                .FirstOrDefault();
 
             foreach (var cell in neighbors)
             {
                 if (cell.Inhabitants.OfType<Herbivore>().Any() || cell.Inhabitants.OfType<Carnivore>().Any())
                 {
-                    continue; // Nem léphet azonos lény vagy ragadozó cellájára
+                    continue;
                 }
 
                 int score = 0;
                 if (cell.Plant != null)
                 {
-                    score += 10; // Növények pozitív pontot adnak
+                    score += 10;
                 }
 
                 if (predatorCell != null)
                 {
-                    // Távolodás a ragadozótól
                     int distanceToPredator = Math.Abs(cell.X - predatorCell.X) + Math.Abs(cell.Y - predatorCell.Y);
-                    score += distanceToPredator; // Minél távolabb a ragadozótól, annál jobb
+                    score += distanceToPredator;
                 }
 
                 if (score > bestScore)
@@ -94,8 +87,26 @@ namespace TheWorld
         {
             if (CurrentCell?.Plant != null)
             {
-                CurrentCell.Plant.GetEaten();
                 Energy += 5;
+                CurrentCell.Plant = null;
+            }
+        }
+
+        public void Reproduce(World world)
+        {
+            if (Energy >= 40)
+            {
+                List<Cell> neighbors = world.GetNeighbors(CurrentCell);
+                foreach (var cell in neighbors)
+                {
+                    if (!cell.Inhabitants.Any())
+                    {
+                        Herbivore offspring = new Herbivore(15, SightRange, cell, Size);
+                        world.AddCreature(offspring, cell.X, cell.Y);
+                        Energy -= 20;
+                        break;
+                    }
+                }
             }
         }
     }

@@ -10,26 +10,32 @@ namespace TheWorld
     {
         public int GrowthLevel { get; private set; }
         public bool IsFullyGrown => GrowthLevel >= 5;
-        public bool IsEaten { get; set; } = false;
+        public Cell CurrentCell { get; set; }
 
-        internal Cell CurrentCell { get; set; }
-
+        public Plant() 
+        {
+            GrowthLevel = 0;
+        }
         public void Grow()
         {
             if (GrowthLevel < 5)
-                GrowthLevel++;
-            IsEaten = false;
+            {
+                GrowthLevel++; 
+            }
         }
 
-        internal void Spread(World world)
+        public void Spread(World world, Cell cell)
         {
-            var neighbors = world.GetNeighbors(CurrentCell);
-            foreach (var cell in neighbors)
+            if (IsFullyGrown)
             {
-                if (cell.Plant == null)
+                List<Cell> neighbours = world.GetNeighbors(cell);
+                foreach (var neighbourCell in neighbours)
                 {
-                    cell.AddPlant(new Plant());
-                    break;
+                    if (cell.Plant == null && !cell.Inhabitants.Any())
+                    {
+                        cell.Plant = new Plant();
+                        break;
+                    }
                 }
             }
         }

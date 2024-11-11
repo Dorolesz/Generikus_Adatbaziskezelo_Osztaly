@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheWorld
 {
-    internal class Carnivore : Creature
+    public class Carnivore : Creature
     {
         public int Size { get; set; }
 
@@ -18,13 +18,18 @@ namespace TheWorld
 
         public override void Move(Cell newCell)
         {
-            if (newCell == null && newCell != CurrentCell)
+            if (newCell != null && newCell != CurrentCell && !newCell.Inhabitants.OfType<Carnivore>().Any())
             {
                 CurrentCell.RemoveCreature(this);
-                CurrentCell = newCell;
                 newCell.AddCreature(this);
+                CurrentCell = newCell;
+
+                var prey = newCell.Inhabitants.OfType<Herbivore>().FirstOrDefault();
+                if (prey != null)
+                {
+                    EatCreature(prey);
+                }
             }
-            
         }
 
         public override void Eat(Creature other)
@@ -39,45 +44,37 @@ namespace TheWorld
         public Cell FindBestCellToMove(World world)
         {
             List<Cell> neighbors = world.GetNeighbors(CurrentCell);
-            Cell bestCell = neighbors[0];
-            if (bestCell == null)
-            {
-                bestCell = default(Cell);
-            }
+            Cell bestCell = null;
 
-            // Keresünk növényevőket a látómezőn belül
             List<Cell> visibleCells = new List<Cell>();
             for (int dx = -SightRange; dx <= SightRange; dx++)
             {
                 for (int dy = -SightRange; dy <= SightRange; dy++)
                 {
-                    if (dx == 0 && dy == 0) continue; // Ne vegyük figyelembe a jelenlegi cellát
+                    if (dx == 0 && dy == 0) continue;
                     Cell cell = world.GetCell(CurrentCell.X + dx, CurrentCell.Y + dy);
-                    if (cell == null)
-                    {
-                        cell = default(Cell);
-                    }else
+                    if (cell != null)
                     {
                         visibleCells.Add(cell);
                     }
                 }
             }
 
-            // Megkeressük a legközelebbi növényevőt
             Cell targetCell = visibleCells
                 .Where(cell => cell.Inhabitants.OfType<Herbivore>().Any())
                 .OrderBy(cell => Math.Abs(cell.X - CurrentCell.X) + Math.Abs(cell.Y - CurrentCell.Y))
-                .FirstOrDefault() ?? new Cell(0, 0);
+                .FirstOrDefault();
 
             if (targetCell != null)
             {
-                // Mozgás a cél felé
                 int targetX = targetCell.X;
                 int targetY = targetCell.Y;
                 int bestDistance = int.MaxValue;
 
                 foreach (var cell in neighbors)
                 {
+                    if (cell.Plant != null || cell.Inhabitants.OfType<Carnivore>().Any()) continue;
+
                     int distance = Math.Abs(cell.X - targetX) + Math.Abs(cell.Y - targetY);
                     if (distance < bestDistance)
                     {
@@ -88,8 +85,7 @@ namespace TheWorld
             }
             else
             {
-                // Ha nincs cél, akkor véletlenszerű mozgás
-                bestCell = neighbors.FirstOrDefault();
+                bestCell = neighbors.FirstOrDefault(cell => cell.Plant == null && !cell.Inhabitants.OfType<Carnivore>().Any());
             }
 
             return bestCell;
@@ -103,6 +99,24 @@ namespace TheWorld
             {
                 Energy += other.Energy; // Növeli az energiaszintet
                 other.CurrentCell.RemoveCreature(other); // Eltávolítjuk a prédát a cellából
+            }
+        }
+
+        public void Reproduce(World world)
+        {
+            if (Energy >= 40)
+            {
+                List<Cell> neighbors = world.GetNeighbors(CurrentCell);
+                foreach (var cell in neighbors)
+                {
+                    if (!cell.Inhabitants.Any())
+                    {
+                        Carnivore offspring = new Carnivore(15, SightRange, cell, Size);
+                        world.AddCreature(offspring, cell.X, cell.Y);
+                        Energy -= 20;
+                        break;
+                    }
+                }
             }
         }
     }
