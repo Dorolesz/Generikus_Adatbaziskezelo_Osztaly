@@ -7,6 +7,9 @@ public class World
 {
     public int Width { get; private set; }
     public int Height { get; private set; }
+    public int HerbivoreCount { get; private set; }
+    public int CarnivoreCount { get; private set; }
+    public int PlantCount { get; private set; } = 0;
     public Cell[,] Cells { get; private set; }
 
     public World(int width, int height)
@@ -39,6 +42,9 @@ public class World
         Cell cell = GetCell(x, y);
         cell?.AddCreature(creature);
         creature.CurrentCell = cell;
+
+        if (creature is Herbivore) HerbivoreCount++;
+        else if (creature is Carnivore) CarnivoreCount++;
     }
 
     public void AddPlant(Plant plant, int x, int y)
@@ -46,6 +52,7 @@ public class World
         Cell cell = GetCell(x, y);
         cell?.AddPlant(plant);
         plant.CurrentCell = cell;
+        PlantCount++;
     }
 
     public void RemoveCreature(Creature creature)
@@ -55,11 +62,44 @@ public class World
             if (cell.Inhabitants.Contains(creature))
             {
                 cell.RemoveCreature(creature);
+
+                if (creature is Herbivore)
+                {
+                    HerbivoreCount--;
+                }
+                else if (creature is Carnivore)
+                {
+                    CarnivoreCount--;
+                }
+
                 break;
             }
         }
     }
 
+    public void RemovePlant(Plant plant)
+    {
+        foreach (var cell in Cells)
+        {
+            if (cell.Plant == plant)
+            {
+                cell.RemovePlant(plant);
+                break;
+            }
+        }
+    }
+
+    public void DecreasePlantCount()
+    {
+        PlantCount--;
+    }
+
+    public void DisplayStatistics()
+    {
+        Console.WriteLine($"Herbivore: {HerbivoreCount}");
+        Console.WriteLine($"Carnivore: {CarnivoreCount}");
+        Console.WriteLine($"Plant: {PlantCount}\n");
+    }
 
     public List<Cell> GetNeighbors(Cell cell)
     {
@@ -175,6 +215,8 @@ public class World
             plant.Grow();
             plant.Spread(this, cell);
         }
+
+        DisplayStatistics();
     }
 
     public void Display()

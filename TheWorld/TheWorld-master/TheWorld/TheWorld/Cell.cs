@@ -36,7 +36,10 @@ namespace TheWorld
             {
                 Plant = plant;
             }
-
+        }
+        public void RemovePlant(Plant plant)
+        {
+            this.Plant = null;
         }
     }
 }

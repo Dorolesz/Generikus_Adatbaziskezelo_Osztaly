@@ -30,23 +30,18 @@ namespace TheWorld
 
         public void Spread(World world, Cell currentCell)
         {
-            // Növeli a számlálót minden egyes körben
             spreadCounter++;
 
-            // Csak akkor szaporodik, ha a számláló elérte az intervallumot
             if (spreadCounter >= SpreadInterval)
             {
-                // Megkeresi az üres szomszédokat
                 var emptyNeighbors = world.GetNeighbors(currentCell).Where(cell => cell.Plant == null && !cell.Inhabitants.Any()).ToList();
 
                 if (emptyNeighbors.Any())
                 {
-                    // Kiválaszt egy random üres cellát a szomszédok közül, ahol új növény nőhet
                     var targetCell = emptyNeighbors[new Random().Next(emptyNeighbors.Count)];
                     world.AddPlant(new Plant(GrowthLevel, SpreadInterval), targetCell.X, targetCell.Y);
                 }
 
-                // Számláló visszaállítása
                 spreadCounter = 0;
             }
         }
