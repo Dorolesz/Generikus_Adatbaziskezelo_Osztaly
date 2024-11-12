@@ -10,11 +10,15 @@ namespace TheWorld
     {
         public int GrowthLevel { get; private set; }
         public bool IsFullyGrown => GrowthLevel >= 5;
+        public int SpreadInterval { get; private set; } // Szaporodási intervallum
+        private int spreadCounter; // Szaporodási számláló
         public Cell CurrentCell { get; set; }
 
-        public Plant() 
+        public Plant(int growthLevel, int spreadInterval)
         {
-            GrowthLevel = 0;
+            GrowthLevel = growthLevel;
+            SpreadInterval = spreadInterval;
+            spreadCounter = 0; // Kezdetben 0-ra állítva
         }
         public void Grow()
         {
@@ -24,19 +28,26 @@ namespace TheWorld
             }
         }
 
-        public void Spread(World world, Cell cell)
+        public void Spread(World world, Cell currentCell)
         {
-            if (IsFullyGrown)
+            // Növeli a számlálót minden egyes körben
+            spreadCounter++;
+
+            // Csak akkor szaporodik, ha a számláló elérte az intervallumot
+            if (spreadCounter >= SpreadInterval)
             {
-                List<Cell> neighbours = world.GetNeighbors(cell);
-                foreach (var neighbourCell in neighbours)
+                // Megkeresi az üres szomszédokat
+                var emptyNeighbors = world.GetNeighbors(currentCell).Where(cell => cell.Plant == null && !cell.Inhabitants.Any()).ToList();
+
+                if (emptyNeighbors.Any())
                 {
-                    if (cell.Plant == null && !cell.Inhabitants.Any())
-                    {
-                        cell.Plant = new Plant();
-                        break;
-                    }
+                    // Kiválaszt egy random üres cellát a szomszédok közül, ahol új növény nőhet
+                    var targetCell = emptyNeighbors[new Random().Next(emptyNeighbors.Count)];
+                    world.AddPlant(new Plant(GrowthLevel, SpreadInterval), targetCell.X, targetCell.Y);
                 }
+
+                // Számláló visszaállítása
+                spreadCounter = 0;
             }
         }
 

@@ -34,6 +34,7 @@ public class World
     }
 
     public void AddCreature(Creature creature, int x, int y)
+
     {
         Cell cell = GetCell(x, y);
         cell?.AddCreature(creature);
@@ -183,21 +184,21 @@ public class World
             for (int x = 0; x < Width; x++)
             {
                 Cell cell = Cells[x, y];
-                if (cell.Plant != null)
+                if (cell.Inhabitants.OfType<Carnivore>().Any())
                 {
-                    Console.Write("P ");  // Növény
+                    Console.Write("C ");
                 }
-                else if (cell.Inhabitants.Any(c => c is Carnivore))
+                else if (cell.Inhabitants.OfType<Herbivore>().Any())
                 {
-                    Console.Write("C ");  // Ragadozó
+                    Console.Write("H ");
                 }
-                else if (cell.Inhabitants.Any(c => c is Herbivore))
+                else if (cell.Plant != null)
                 {
-                    Console.Write("H ");  // Növényevő
+                    Console.Write("P ");
                 }
                 else
                 {
-                    Console.Write(". ");  // Üres cella
+                    Console.Write(". ");
                 }
             }
             Console.WriteLine();

@@ -12,6 +12,11 @@ namespace TheWorld
         public static void Main(string[] args)
         {
             World world = new World(10, 10);
+            world.AddCreature(new Carnivore(100, 2, world.GetCell(2, 2), 50), 2, 2);
+            world.AddCreature(new Herbivore(80, 3, world.GetCell(1, 1), 30), 1, 1);
+            world.AddPlant(new Plant(5, 3), 6, 3);
+
+
 
             while (true)
             {
@@ -25,6 +30,7 @@ namespace TheWorld
                 world.Update();
                 world.Display();
                 Thread.Sleep(1000);
+
             }
         }
     }
