@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Generikus_Adatbaziskezelo_Osztaly/1.0.0": {
+        "runtime": {
+          "Generikus_Adatbaziskezelo_Osztaly.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Generikus_Adatbaziskezelo_Osztaly/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

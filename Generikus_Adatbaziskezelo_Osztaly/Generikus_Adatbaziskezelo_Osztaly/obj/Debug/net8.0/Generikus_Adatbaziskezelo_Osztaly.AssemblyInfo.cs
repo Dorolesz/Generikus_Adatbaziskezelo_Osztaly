@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Generikus_Adatbaziskezelo_Osztaly")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4cf5fc4f0ec882f0399b64ad8bb295272efa44a4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff188943d322485cf8c5ee6257877b803afb6f0d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Generikus_Adatbaziskezelo_Osztaly")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Generikus_Adatbaziskezelo_Osztaly")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

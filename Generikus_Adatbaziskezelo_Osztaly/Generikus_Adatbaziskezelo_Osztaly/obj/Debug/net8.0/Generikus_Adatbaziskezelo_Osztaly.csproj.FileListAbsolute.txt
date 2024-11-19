@@ -1,0 +1,15 @@
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\bin\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.exe
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\bin\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.deps.json
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\bin\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.runtimeconfig.json
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\bin\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.dll
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\bin\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.pdb
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.GeneratedMSBuildEditorConfig.editorconfig
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.AssemblyInfoInputs.cache
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.AssemblyInfo.cs
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.csproj.CoreCompileInputs.cache
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.sourcelink.json
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.dll
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\refint\Generikus_Adatbaziskezelo_Osztaly.dll
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.pdb
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\Generikus_Adatbaziskezelo_Osztaly.genruntimeconfig.cache
+D:\PETRIK\2024-25\C#\Generikus_Adatbaziskezelo_Osztaly\Generikus_Adatbaziskezelo_Osztaly\obj\Debug\net8.0\ref\Generikus_Adatbaziskezelo_Osztaly.dll

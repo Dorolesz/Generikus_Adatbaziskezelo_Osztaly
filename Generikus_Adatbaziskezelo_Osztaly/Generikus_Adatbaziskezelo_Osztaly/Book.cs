@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Generikus_Adatbaziskezelo_Osztaly
 {
-    public class Student
+    public class Book
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
 
         public override string ToString()
         {
-            return $"Id: {Id}, Name: {Name}, Age: {Age}";
+            return $"Id: {Id}, Title: {Title}, Author: {Author}";
         }
     }
 
